@@ -1,4 +1,3 @@
-import fs from 'fs'
 import knex from "knex"
 
 export default class Api {
@@ -10,8 +9,6 @@ export default class Api {
         try {
             const productos = await this.knex.from(this.table).select("*")
             return productos
-            // const productos = await fs.promises.readFile(this.rutaBD,'utf-8')
-            // return JSON.parse(productos)
         } catch (error) {
             throw new Error(`Error: ${error}`)
         }
@@ -19,9 +16,8 @@ export default class Api {
 
     async findById(id){
         try {
-            const productos = await this.findAll()
-            const resultado = productos.find(e => e.id==id)
-            return resultado
+            const producto = await this.knex.from(this.table).select("*").where('id',id)
+            return producto
         } catch (error) {
             throw new Error(`Error: ${error}`)
         }
@@ -29,14 +25,8 @@ export default class Api {
 
     async create(obj){
         try {
-            const productos = await this.findAll()
-            let id
-            let timestamp = Date.now()
-            productos.length === 0 ? id = 1 : id = productos[productos.length-1].id + 1
-            productos.push({...obj,id,timestamp})
-
-            await fs.promises.writeFile(this.rutaBD,JSON.stringify(productos))
-            return id
+            const nuevoProducto = await this.knex(this.table).insert(obj)
+            return nuevoProducto
         } catch (error) {
             throw new Error(`Error: ${error}`)
         }
@@ -62,15 +52,20 @@ export default class Api {
 
     async deleteP(id){
         try {
-            const productos = await this.findAll()
-            const products = productos.filter(p => p.id !== Number(id))
-            console.log(productos)
-            console.log(products)
-            await fs.promises.writeFile(this.rutaBD,JSON.stringify(products))
+            const elementoBorrado = await this.knex.from(this.table).where("id",id).del()
+            return elementoBorrado
         } catch (error) {
             throw new Error(`Error: ${error}`)
-        }
-        
+        }   
     }
+
+    async deleteAll(id){
+        try {
+            return await this.knex.from(this.table).del()
+        } catch (error) {
+            throw new Error(`Error: ${error}`)
+        }   
+    }
+
 
 }

@@ -1,12 +1,12 @@
 export const options = {
     mariaDB:{
-        client:"mysql",
+        client:"mysql2",
         connection:{
             host:"127.0.0.1",
             user:"root",
             password:"root",
-            database:"ecommerce"
-        }
+            database:"ecommerce",
+        },
     },
     sqLite:{
         client:"sqlite3",
@@ -14,5 +14,5 @@ export const options = {
             filename:"./db.sqlite",
         },
         useNullAsDefault: true
-    }
-}
+    },
+};

@@ -7,8 +7,8 @@ const app = express()
 app.use(express.json())
 app.use(morgan('dev'))
 
-app.use('/productos',productosRoutes)
-app.use('/carrito',carritoRoutes)
+app.use('/api/productos',productosRoutes)
+app.use('/api/carrito',carritoRoutes)
 
 
 const PORT = 8080

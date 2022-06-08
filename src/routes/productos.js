@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import Api from '../apiClass'
+import { options } from '../dataBase/configDB';
 
 const router = Router()
-const api = new Api("/dataBase/productos.json")
+const api = new Api(options.mariaDB,'articulos')
 
 const isAdmin = true
 
