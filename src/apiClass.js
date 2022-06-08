@@ -1,13 +1,17 @@
 import fs from 'fs'
+import knex from "knex"
 
 export default class Api {
-    constructor(rutaBD){
-        this.rutaBD =__dirname + rutaBD
+    constructor(options,table){
+        this.knex = knex(options)
+        this.table = table
     }
     async findAll(){
         try {
-            const productos = await fs.promises.readFile(this.rutaBD,'utf-8')
-            return JSON.parse(productos)
+            const productos = await this.knex.from(this.table).select("*")
+            return productos
+            // const productos = await fs.promises.readFile(this.rutaBD,'utf-8')
+            // return JSON.parse(productos)
         } catch (error) {
             throw new Error(`Error: ${error}`)
         }
